@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ctx="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd ">
+	
+	<bean id="SqlBean" class="com.accenture.adf.helper.FERSDbQuery">
+		<property name="searchEvent" value="SELECT E1.EVENTID, E1.NAME, E1.DESCRIPTION, E1.PLACES, E1.DURATION, E1.EVENTTYPE,  E2.EVENTSESSIONID, E2.SEATSAVAILABLE FROM EVENT E1, EVENTSESSION E2 WHERE E1.EVENTID = E2.EVENTID"></property>
+		
+		<property name="searchEventAsc" value="SELECT E1.EVENTID, E1.NAME, E1.DESCRIPTION, E1.PLACES, E1.DURATION, E1.EVENTTYPE,  E2.EVENTSESSIONID, E2.SEATSAVAILABLE FROM EVENT E1, EVENTSESSION E2 WHERE E1.EVENTID = E2.EVENTID ORDER BY E1.NAME ASC"></property>
+		
+		<property name="searchEventDesc" value="SELECT E1.EVENTID, E1.NAME, E1.DESCRIPTION, E1.PLACES, E1.DURATION, E1.EVENTTYPE,  E2.EVENTSESSIONID, E2.SEATSAVAILABLE FROM EVENT E1, EVENTSESSION E2 WHERE E1.EVENTID = E2.EVENTID ORDER BY E1.NAME DESC"></property>
+		
+		<property name="searchByEventName" value="SELECT E1.EVENTID, E1.NAME, E1.DESCRIPTION, E1.PLACES, E1.DURATION, E1.EVENTTYPE,  E2.EVENTSESSIONID, E2.SEATSAVAILABLE FROM EVENT E1, EVENTSESSION E2 WHERE E1.EVENTID = E2.EVENTID AND E1.NAME LIKE ? "></property>
+		
+		<property name="searchByEventPlace" value="SELECT E1.EVENTID, E1.NAME, E1.DESCRIPTION, E1.PLACES, E1.DURATION, E1.EVENTTYPE,  E2.EVENTSESSIONID, E2.SEATSAVAILABLE FROM EVENT E1, EVENTSESSION E2 WHERE E1.EVENTID = E2.EVENTID AND E1.PLACES LIKE ? "></property>
+		
+		<property name="updateEvent" value="UPDATE EVENTSESSION SET SEATSAVAILABLE = SEATSAVAILABLE - 1  WHERE EVENTSESSIONID = ? AND EVENTID = ?"></property>
+		
+		<property name="checkEvent" value="SELECT COUNT(*) AS EVENTCOUNT FROM EVENTSESSIONSIGNUP WHERE EVENTSESSIONID=? AND VISITORID=? AND EVENTID=?"> </property>
+		
+		<property name="updateDeleteEvent" value="UPDATE EVENTSESSION SET SEATSAVAILABLE = SEATSAVAILABLE + 1  WHERE EVENTSESSIONID = ? AND EVENTID = ?"></property>
+		
+		<property name="insertQuery" value="INSERT INTO VISITOR(USERNAME,PASSWORD,FIRSTNAME,LASTNAME,EMAIL,PHONENUMBER,ADDRESS) VALUES(?,?,?,?,?,?,?)"></property>
+		
+		<property name="searchQuery" value="SELECT * FROM VISITOR WHERE USERNAME=? AND PASSWORD=?"></property>
+		
+		<property name="registerQuery" value="INSERT INTO EVENTSESSIONSIGNUP(VISITORID,EVENTSESSIONID,EVENTID) VALUES(?,?,?)"></property>
+		
+		<property name="statusQuery" value="SELECT DISTINCT E1.EVENTID, E1.NAME, E1.DESCRIPTION, E1.PLACES, E1.DURATION, E1.EVENTTYPE, E4.FIRSTNAME, E4.LASTNAME, E3.EVENTSESSIONID, E2.SIGNUPID FROM EVENT E1, EVENTSESSIONSIGNUP E2, EVENTSESSION E3, EVENTCOORDINATOR E4  WHERE E1.EVENTID = E2.EVENTID  AND E2.EVENTID=E3.EVENTID AND E2.EVENTSESSIONID=E3.EVENTSESSIONID  AND E3.EVENTCOORDINATORID = E4.EVENTCOORDINATORID  AND E2.VISITORID = ? AND E3.EVENTSESSIONID in (SELECT EVENTSESSIONID FROM EVENTSESSIONSIGNUP) ORDER BY E1.EVENTID DESC"></property>
+		<property name="updateQuery" value="UPDATE VISITOR SET FIRSTNAME=?, LASTNAME=?, USERNAME=?, EMAIL=?, PHONENUMBER=?, ADDRESS=? WHERE VISITORID=?"></property>
+		<property name="deleteEventQuery" value="DELETE FROM EVENTSESSIONSIGNUP WHERE EVENTSESSIONID = ? AND VISITORID = ? AND EVENTID = ?"></property>
+		<property name="validateVisitor" value="SELECT USERNAME FROM VISITOR"></property>
+		<property name="getEvent" value="SELECT E1.EVENTID, E1.NAME, E1.DESCRIPTION, E1.PLACES, E1.DURATION, E1.EVENTTYPE,  E2.EVENTSESSIONID, E2.SEATSAVAILABLE FROM EVENT E1, EVENTSESSION E2 WHERE E1.EVENTID = E2.EVENTID AND E1.EVENTID = ? AND E2.EVENTSESSIONID = ?"></property>
+		<property name="updateTEvent" value="UPDATE EVENT E1 SET E1.NAME=?, E1.DESCRIPTION=?, E1.PLACES=?, E1.DURATION=?, E1.EVENTTYPE=? WHERE E1.EVENTID=?"></property>
+		<property name="updateEventSession" value="UPDATE EVENTSESSION SET SEATSAVAILABLE=? WHERE EVENTSESSIONID = ? AND EVENTID = ?"></property>
+		<property name="insertEvent" value="INSERT INTO EVENT(EVENTID, NAME, DESCRIPTION, PLACES, DURATION, EVENTTYPE) VALUES(?,?,?,?,?,?)"></property>
+		<property name="insertEventSession" value="INSERT INTO EVENTSESSION(EVENTSESSIONID, EVENTCOORDINATORID, EVENTID, SEATSAVAILABLE) VALUES (?,?,?,?)"></property>
+		<property name="selectEventCoordinator" value="SELECT EVENTCOORDINATORID, USERNAME FROM EVENTCOORDINATOR"></property>
+		<property name="selectMaxEventId" value="SELECT MAX(EVENTID) EVENTID FROM EVENT"></property>
+		<property name="selectMaxEventSessionId" value="SELECT MAX(EVENTSESSIONID) EVENTSESSIONID FROM EVENTSESSION"></property>
+		<property name="deleteEvent" value="DELETE FROM EVENT WHERE EVENTID=?"></property>
+		<property name="deleteEventSession" value="DELETE FROM EVENTSESSION WHERE EVENTSESSIONID=?"></property>
+		<property name="deleteEventSessionSignup" value="DELETE FROM EVENTSESSIONSIGNUP WHERE EVENTSESSIONID = ? AND EVENTID = ?"></property>
+		<property name="changePWDQuery" value="UPDATE VISITOR SET PASSWORD=? WHERE VISITORID=?"></property>
+		<property name="verifyPWDQuery" value="SELECT PASSWORD FROM VISITOR WHERE VISITORID=?"></property>
+ 	</bean>
+	
+	
+</beans>
+
+
+
+

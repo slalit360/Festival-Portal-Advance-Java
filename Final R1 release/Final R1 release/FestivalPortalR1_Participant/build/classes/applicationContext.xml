@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ctx="http://www.springframework.org/schema/context"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+	http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+	http://www.springframework.org/schema/context
+	http://www.springframework.org/schema/context/spring-context-2.5.xsd ">
+	
+	<bean id="SqlBean" class="com.accenture.adf.helper.FERSDbQuery">
+		<property name="searchEvent" value="SELECT * FROM EVENT"></property>
+		<property name="updateEvent" value="UPDATE EVENT SET SEATSAVAILABLE = SEATSAVAILABLE - 1 WHERE EVENTID=?"></property>
+		<property name="checkEvent" value="SELECT COUNT(*) AS EVENTCOUNT FROM EVENTSIGNUP WHERE EVENTID=? AND VISITORID=?"></property>
+		<property name="updateDeleteEvent" value="UPDATE EVENT SET SEATSAVAILABLE = SEATSAVAILABLE + 1 WHERE EVENTID=?"></property>
+		<property name="insertQuery" value="INSERT INTO VISITOR(USERNAME,PASSWORD,FIRSTNAME,LASTNAME,EMAIL,PHONENUMBER,ADDRESS) VALUES(?,?,?,?,?,?,?)"></property>
+		<property name="searchQuery" value="SELECT * FROM VISITOR WHERE USERNAME=? AND PASSWORD=?"></property>
+		<property name="registerQuery" value="INSERT INTO EVENTSIGNUP(EVENTID,VISITORID) VALUES(?,?)"></property>
+		<property name="statusQuery" value="SELECT E1.EVENTID, E1.NAME, E1.DESCRIPTION, E1.PLACES, E1.DURATION, E1.EVENTTYPE , E2.SIGNUPID FROM EVENT E1, EVENTSIGNUP E2 WHERE E1.EVENTID = E2.EVENTID AND E2.VISITORID = ?"></property>
+		<property name="updateQuery" value="UPDATE VISITOR SET FIRSTNAME=?, LASTNAME=?, USERNAME=?, EMAIL=?, PHONENUMBER=?, ADDRESS=? WHERE VISITORID=?"></property>
+		<property name="deleteEventQuery" value="DELETE FROM EVENTSIGNUP WHERE EVENTID = ? AND VISITORID = ?"></property>
+		<property name="validateVisitor" value="SELECT USERNAME FROM VISITOR"></property>
+		<property name="changePWDQuery" value="UPDATE VISITOR SET PASSWORD=? WHERE VISITORID=?"></property>
+		<property name="verifyPWDQuery" value="SELECT PASSWORD FROM VISITOR WHERE VISITORID=?"></property>
+	</bean> 
+	
+	
+</beans>
